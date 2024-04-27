@@ -15241,6 +15241,8 @@ jQuery.extend({
 			// Convert no matter what (that way responseXXX fields are always set)
 			response = ajaxConvert( s, response, jqXHR, isSuccess );
 
+      console.log('response', response);
+
 			// If successful, handle type chaining
 			if ( isSuccess ) {
 
@@ -16974,6 +16976,8 @@ function completeCodeFlow(params){
       state: urlParam('state')
     };
   }
+
+  console.log('params:', params)
   
   var ret = Adapter.get().defer();
   var state = JSON.parse(sessionStorage[params.state]);
@@ -17048,6 +17052,7 @@ function completeCodeFlow(params){
 function completeTokenRefreshFlow() {
   var ret = Adapter.get().defer();
   var tokenResponse = getPreviousToken();
+  console.log('tokenResponse:', tokenResponse);
   var state = JSON.parse(sessionStorage[tokenResponse.state]);
   var refresh_token = tokenResponse.refresh_token;
 
@@ -17144,6 +17149,7 @@ function validTokenResponse() {
     return true;
   } else {
     if (!BBClient.settings.fullSessionStorageSupport) {
+      console.log('args.input:', args.input);
       var state = urlParam('state') || (args.input && args.input.state);
       return (state && sessionStorage[state] && JSON.parse(sessionStorage[state]).tokenResponse);
     }
@@ -17154,6 +17160,7 @@ function validTokenResponse() {
 function isFakeOAuthToken(){
   if (validTokenResponse()) {
     var token = getPreviousToken();
+    console.log('token', token);
     if (token && token.state) {
       var state = JSON.parse(sessionStorage[token.state]);
       return state.fake_token_response;
